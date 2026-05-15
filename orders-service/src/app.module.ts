@@ -33,7 +33,7 @@ import { Order } from './entity/order.entity';
         name: 'KITCHEN_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://user:password:5672'],
+          urls: ['amqp://guest:guest@localhost:5672'],
           queue: 'kitchen_queue',
           queueOptions: {
             durable: false,
