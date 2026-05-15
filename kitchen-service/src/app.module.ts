@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Ticket } from './entity/ticket.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -22,6 +24,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       }),
     }),
+
+    TypeOrmModule.forFeature([Ticket]),
+
+    ClientsModule.register([
+      {
+        name: 'RIDER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://guest:guest@localhost:5672'],
+          queue: 'rider_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
