@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Order } from './entity/order.entity';
 
 @Module({
   imports: [
@@ -23,6 +25,22 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
       }),
     }),
+
+    TypeOrmModule.forFeature([Order]),
+
+    ClientsModule.register([
+      {
+        name: 'KITCHEN_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://user:password:5672'],
+          queue: 'kitchen_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
