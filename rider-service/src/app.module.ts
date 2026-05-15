@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Dispatch } from './entity/dispatch.entity';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       }),
     }),
+    TypeOrmModule.forFeature([Dispatch]),
   ],
   controllers: [AppController],
   providers: [AppService],
